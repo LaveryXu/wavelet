@@ -8,12 +8,12 @@ class Handler implements URLHandler {
 
     public String handleRequest(URI url) {
         if (url.getPath().equals("/")) {
-            return String.format("Number: %d", num);
+            return String.format("Jun's Number: %d", num); // format() prints out to the web page
         } else if (url.getPath().equals("/increment")) {
             num += 1;
             return String.format("Number incremented!");
         } else {
-            System.out.println("Path: " + url.getPath());
+            System.out.println("Path: " + url.getPath()); // System.out.println() prints out to the terminal
             if (url.getPath().contains("/add")) {
                 String[] parameters = url.getQuery().split("=");
                 if (parameters[0].equals("count")) {
