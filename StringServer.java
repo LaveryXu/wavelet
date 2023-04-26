@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 
 /*
  * a web server called StringServer that supports the path and behavior described below.
@@ -8,44 +7,74 @@ import java.util.ArrayList;
  */
 
 class StringHandler implements URLHandler {
-    String x = ""; // "" is an empty String, an empty String is not equivalent to a null reference. QUESTION: What's stored in an empty String like ""? Is it a referece or what?
-    
-    public String handleRequest(URI url) {
+    String x = ""; // "" is an empty String. An empty String "" is not equivalent to a null reference. QUESTIONS: 1. What kind of data or what data is stored in an empty String ""? Is it a referece? Is there nothing/no data stored in an empty String? 2. How does Java encode/interprete an empty String ""?
+    int portNum;
+
+    StringHandler(int portNum) { // a constructor that updates the field portNum as the port number the user enters
+        this.portNum = portNum;
+    }
+
+    /*
+     * Cases to consider:
+     * - when the query is:
+     *      - ?
+     *      - null (without ?, the url is http://localhost:<portNum>/message)
+     * - when the path is
+     *      - null // the path of the url is printed as "/" by System.out.println(url.getPath()), when the url is http://localhost:<portNum>/ or http://localhost:<portNum>
+     * - when there are more than one = or no = in the query
+     *      - consecutive =
+     *      - non-consecutive =
+     *      - no =
+     *      - etc.
+     * - when there are more than one s or no s in the query
+     *      - consecutive s
+     *      - non-consecutive s
+     *      - no s
+     *      - etc.
+     * - more cases and corner cases to consider...
+     */
+
+    public String handleRequest(URI url) throws NullPointerException{ // QUESTION: This method is not called in the main method below, how does this method process the input entered in the address box on the web page?
+        System.out.println("url:    " + url.toString());
+        System.out.println("host:   " + url.getHost());
+        System.out.println("path:   " + url.getPath());
+        System.out.println("query:  " + url.getQuery()); // QUESTION: After url, host, path, and query are printed, why is /favicon.ico and some other stuff printed?
+        
         // The requests should look like this: add-message?s=<string>
         if (url.getPath().equals("/")) {
             return String.format("Copy '/add-message?s=' (excluding ''), paste it after this web page's url's port number in the address box above, delete any other input after '/add-message?s=', and then enter the string you wanna add.");
         }
-        else if (url.getPath().equals("/add-message")) {
-            if(url.getQuery().contains("s")) { // Because now I have no time to test wether url.getQuery() returns url's query with or without ?, I use contains() instead. TODO: 日后优化
+        // else if(url.getQuery() == null) { // java.lang.NullPointerException: Cannot invoke "String.getBytes()" because "<local2>" is null, when the url is http://localhost:1111/message
+        //     return null;
+        // }
+        else if(url.getQuery().contains("s")) {
+            if(url.getQuery().contains("=")) {
                 String[] parameters = url.getQuery().split("=");
-                if (parameters[0].equals("s")) {
-                    x += parameters[1];
+                if (parameters[0].equals("s") && !(parameters.length < 2)) {
+                    x += parameters[1]; // the + operator is applicable to String objects.
                     x += "\n";
                     return String.format(x);
                 }
             }
         }
 
-        // System.out.println("Your illegal url: " + url.toString()); // 日后优化
-        return "404 NOT FOUND.";
+    return "404 NOT FOUND.\nThe url you entered is illegal, make sure your url is in this format: http://localhost:" + portNum + "/add-message?s=<your String>\nThis web server does NOT support empty queries and you may NOT enter nothing after 'add-messages?s='\nOtherwise an error message would be displayed on this web page.";
     }
 }
 
 public class StringServer {
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) throws IOException { // TODO: Study IOException and use it to narrow the arguments to StringHandler(int portNum) down to int arguments only (make this constructor throw exceptions when the argument passed to it is non-int data).
         if(args.length == 0) {
             System.out.println("Missing port number! Try any number between 1024 to 49151");
             return;
         }
 
         int portNum = Integer.parseInt(args[0]);
-        Server.start(portNum, new StringHandler());
-
-        // System.out.println(new URI().toString()); //用于日后探索Java的URI class。
+        Server.start(portNum, new StringHandler(portNum)); // The method, public static void main (String[] args) throws IOException, finishes executing after this line, because Server.start(portNum, new StringHandler(portNum)) returns void
     }
 }
 
 /* new stuff learned:
- * bash terminal recognize the first file name entered after `java` as the file that has the main method.
+ * bash terminal recognizes the first file name entered after `java` as the file that has the main method.
  * compile all files that depend on each other to run everytime you change one of the file and run the file with main method in it
  */
