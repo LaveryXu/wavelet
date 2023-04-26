@@ -20,7 +20,7 @@ class StringHandler implements URLHandler {
      *      - ?
      *      - null (without ?, the url is http://localhost:<portNum>/message)
      * - when the path is
-     *      - null // the path of the url is printed as "/" by System.out.println(url.getPath()), when the url is http://localhost:<portNum>/ or http://localhost:<portNum>
+     *      - null // the path of the url is printed as "/" by System.out.println(url.getPath()), when the url is http://localhost:<portNum>/ (w / at the end) or http://localhost:<portNum> (w/ / at the end)
      * - when there are more than one = or no = in the query
      *      - consecutive =
      *      - non-consecutive =
@@ -75,6 +75,8 @@ public class StringServer {
 }
 
 /* new stuff learned:
- * bash terminal recognizes the first file name entered after `java` as the file that has the main method.
- * compile all files that depend on each other to run everytime you change one of the file and run the file with main method in it
+ * Regarding to this command: $ java <file01> ... <fileXX>, that's entered in a bash terminal, and all files are required to run the program w desired functionalities:
+ *      - bash recognizes the first file name, <file01> as the file that has the method, public static void main (String[] args).
+ *      - javac <file01> ... <fileXX> compiles all files (friles from file01 to fileXX) into one single file that's encoded in a machine language
+ *          - => after changing one or more of the files, compile all files to ensure the one single file (encoded in a machine language) mentioned above is updated with the changes made in one or more of the files.
  */
