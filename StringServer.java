@@ -35,14 +35,14 @@ class StringHandler implements URLHandler {
      */
 
     public String handleRequest(URI url) throws NullPointerException{ // QUESTION: This method is not called in the main method below, how does this method process the input entered in the address box on the web page?
-        System.out.println("url:    " + url.toString());
-        System.out.println("host:   " + url.getHost());
-        System.out.println("path:   " + url.getPath());
-        System.out.println("query:  " + url.getQuery()); // QUESTION: After url, host, path, and query are printed, why is /favicon.ico and some other stuff printed?
+        // System.out.println("url:    " + url.toString());
+        // System.out.println("host:   " + url.getHost());
+        // System.out.println("path:   " + url.getPath());
+        // System.out.println("query:  " + url.getQuery()); // QUESTION: After url, host, path, and query are printed, why is /favicon.ico and some other stuff printed?
         
         // The requests should look like this: add-message?s=<string>
         if (url.getPath().equals("/")) {
-            return String.format("Copy '/add-message?s=' (excluding ''), paste it after this web page's url's port number in the address box above, delete any other input after '/add-message?s=', and then enter the string you wanna add.");
+            return String.format("Copy '/add-message?s=' (excluding ''), paste it after this web page's url in the address box above, and enter the string you want to add.");
         }
         // else if(url.getQuery() == null) { // java.lang.NullPointerException: Cannot invoke "String.getBytes()" because "<local2>" is null, when the url is http://localhost:1111/message
         //     return null;
