@@ -58,7 +58,7 @@ class StringHandler implements URLHandler {
             }
         }
 
-    return "404 NOT FOUND.\nThe url you entered is illegal, make sure your url is in this format: http://localhost:" + portNum + "/add-message?s=<your String>\nThis web server does NOT support empty queries and you may NOT enter nothing after 'add-messages?s='\nOtherwise an error message would be displayed on this web page.";
+    return "404 NOT FOUND.\nThe url you entered is illegal. Make sure your url is in this format: http://localhost:" + portNum + "/add-message?s=<your String>\nThis web server does NOT support empty queries and you may NOT enter nothing after 'add-messages?s='.";
     }
 }
 
